@@ -4,7 +4,6 @@ package com.be.common.service;
 import com.be.common.dao.UserDao;
 import com.be.common.entity.Group;
 import com.be.common.entity.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -16,8 +15,12 @@ import java.util.List;
 @Service
 public class UserManager {
 
-    @Autowired
+    private final
     UserDao userDao;
+
+    public UserManager(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     public User findUser(Long id) {
         return userDao.findById(id).orElse(null);

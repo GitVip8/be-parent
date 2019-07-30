@@ -21,6 +21,12 @@ public class User {
 
     private int state;
 
+    private String mobile;
+
+    private String email;
+
+    private String weChatId;
+
     @ManyToMany
     private List<Group> groups;
 
@@ -66,6 +72,30 @@ public class User {
 
     public void setState(int state) {
         this.state = state;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getWeChatId() {
+        return weChatId;
+    }
+
+    public void setWeChatId(String weChatId) {
+        this.weChatId = weChatId;
     }
 
     public List<Group> getGroups() {

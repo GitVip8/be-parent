@@ -5,12 +5,13 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 public class UserDetail implements UserDetails {
 
     private User user;
 
-    public UserDetail(User user) {
+    UserDetail(User user) {
         this.user = user;
     }
 
@@ -22,23 +23,20 @@ public class UserDetail implements UserDetails {
         return user;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        if (this.user == null || this.user.getRoles() == null) return null;
+        return this.user.getRoles().stream().map(a -> (GrantedAuthority) a::getName).collect(Collectors.toList());
     }
 
     @Override
     public String getPassword() {
-        return null;
+        return this.user == null ? null : this.user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return this.user == null ? null : this.user.getUsername();
     }
 
     @Override
