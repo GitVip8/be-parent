@@ -9,7 +9,7 @@ import java.util.Optional;
 public class UserAuditorBean implements AuditorAware<Long> {
     @Override
     public Optional<Long> getCurrentAuditor() {
-
+        
         return Optional.empty();
     }
 }
