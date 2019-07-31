@@ -17,6 +17,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * 用户管理
+ */
 @Service
 public class UserManager {
 
@@ -30,6 +33,14 @@ public class UserManager {
         this.userDao = userDao;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
+    
+
+    /**
+     * 查询用户
+     *
+     * @param id 用户ID
+     * @return 用户
+     */
 
     public User findUser(Long id) {
         return userDao.findById(id).orElse(null);

@@ -26,5 +26,30 @@ spring:
       max-lifetime: 1800000
       connection-timeout: 30000
       connection-test-query: select 1
+  jackson:
+    time-zone: GMT+8
+  aop:
+    proxy-target-class: true
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,file:${resource.dir}
+  mvc:
+    static-path-pattern: /**
+    favicon:
+      enabled: false
+  servlet:
+    multipart:
+      enabled: true
+      #max-file-size: 50
+      #max-request-size: 50
+  thymeleaf:
+    cache: false
+    check-template: true
+    check-template-location: true
+    encoding: UTF-8
+    enabled: true
+    suffix: .html
+    mode: HTML5
 logging:
-  path: ../logs
+  path: ../be-logs
+resource:
+  dir: resources/
