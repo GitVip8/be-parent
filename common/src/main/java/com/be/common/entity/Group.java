@@ -3,16 +3,23 @@ package com.be.common.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "t_group")
 public class Group extends BaseEntity {
 
+    public Group(Long id) {
+        this.id = id;
+    }
+
+    public Group() {
+
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String sign;
@@ -23,13 +30,13 @@ public class Group extends BaseEntity {
 
     private String description;
 
+    @ManyToOne
     private Group parent;
 
 
     @JsonIgnore
     @ManyToMany(mappedBy = "groups", fetch = FetchType.LAZY)
     private List<User> users;
-
 
     public Long getId() {
         return id;

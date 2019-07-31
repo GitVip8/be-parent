@@ -3,28 +3,35 @@ package com.be.common.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "t_role")
-public class Role extends BaseEntity {
+public class Role {
 
+    public Role() {
+
+    }
+
+    public Role(Long id) {
+
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
 
     private String description;
 
+    @ManyToOne
     private Role parent;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     private List<User> users;
-
 
     public Long getId() {
         return id;
