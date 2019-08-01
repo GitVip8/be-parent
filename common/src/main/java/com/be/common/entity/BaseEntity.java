@@ -1,14 +1,21 @@
 package com.be.common.entity;
 
+import com.be.common.annotation.Dic;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import sun.rmi.runtime.Log;
 
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
+import javax.persistence.Transient;
+import java.io.Serializable;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -17,7 +24,36 @@ import java.util.Date;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class BaseEntity {
+public abstract class BaseEntity implements Serializable {
+
+    public BaseEntity() {
+        this.init();
+    }
+
+    private void init() {
+        for (Field filed : this.getClass().getDeclaredFields()) {
+            Annotation[] annotations = filed.getAnnotations();
+            if (annotations == null || annotations.length < 1) {
+                continue;
+            }
+          /*  Dic dicAnnotation = (Dic) Arrays.stream(annotations).filter(a -> a instanceof Dic).distinct();
+            if (anns[0] instanceof Dic) {
+                FiledAnnoAge filedAnnoAge = (FiledAnnoAge) anns[0];//注解的值
+                String name = filed.getName();
+                int age = filed.getInt(annoBean);//实际的值
+            }
+            //MyName注解分析
+            if (anns[0] instanceof FiledAnnoName) {
+                FiledAnnoName filedAnnoName = (FiledAnnoName) anns[0];
+                String name = filedAnnoName.value();
+                String fileName = (String) filed.get(annoBean);
+                String filedName = filed.getName();
+                Log.e("filedName_NAME", filedName);
+                Log.e("Name", name + fileName + "");
+
+            }*/
+        }
+    }
 
     /**
      * 创建时间

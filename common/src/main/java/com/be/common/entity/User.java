@@ -1,6 +1,8 @@
 package com.be.common.entity;
 
 
+import com.be.common.annotation.Dic;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -19,6 +21,7 @@ public class User {
 
     private String nickname;
 
+    @Dic(id = 123L)
     private int state;
 
     private String mobile;
