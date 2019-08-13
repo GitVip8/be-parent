@@ -5,9 +5,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name = "t_role")
+@Table(name = "t_common_role")
 public class Role {
 
     public Role() {
@@ -31,7 +32,7 @@ public class Role {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
-    private List<User> users;
+    private Set<User> users;
 
     public Long getId() {
         return id;
@@ -65,11 +66,11 @@ public class Role {
         this.parent = parent;
     }
 
-    public List<User> getUsers() {
+    public Set<User> getUsers() {
         return users;
     }
 
-    public void setUsers(List<User> users) {
+    public void setUsers(Set<User> users) {
         this.users = users;
     }
 }

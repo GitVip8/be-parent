@@ -5,7 +5,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "t_dictionary")
+@Table(name = "t_g_dictionary")
 public class Dictionary extends BaseEntity {
 
     @Id

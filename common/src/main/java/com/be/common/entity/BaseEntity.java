@@ -36,8 +36,9 @@ public abstract class BaseEntity implements Serializable {
             if (annotations == null || annotations.length < 1) {
                 continue;
             }
-          /*  Dic dicAnnotation = (Dic) Arrays.stream(annotations).filter(a -> a instanceof Dic).distinct();
-            if (anns[0] instanceof Dic) {
+            Dic dicAnnotation = (Dic) Arrays.stream(annotations).filter(a -> a instanceof Dic).distinct();
+            String name = filed.getName();
+           /* if (anns[0] instanceof Dic) {
                 FiledAnnoAge filedAnnoAge = (FiledAnnoAge) anns[0];//注解的值
                 String name = filed.getName();
                 int age = filed.getInt(annoBean);//实际的值

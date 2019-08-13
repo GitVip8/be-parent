@@ -15,6 +15,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -33,7 +34,7 @@ public class UserManager {
         this.userDao = userDao;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
-    
+
 
     /**
      * 查询用户
@@ -42,6 +43,7 @@ public class UserManager {
      * @return 用户
      */
 
+    @Cacheable(value = "cache_users", key = "#id")
     public User findUser(Long id) {
         return userDao.findById(id).orElse(null);
     }
@@ -50,104 +52,103 @@ public class UserManager {
         return userDao.findAll(pageable);
     }
 
-    @Cacheable(value = "user-names", key = "#username")
-    public User findUser(String username) {
+
+    public User findUserByUsername(String username) {
         return userDao.findByUsername(username);
     }
 
-    @CachePut(value = "user-names", key = "user.username")
     public User register() {
         return null;
     }
 
-    @CachePut(value = "user-names", key = "username")
-    public User groupPut(String username, Long groupId) {
-        if (StringUtils.isEmpty(username)) return null;
-        return groupPut(username, Collections.singletonList(groupId));
+    @CachePut(value = "cache_users", key = "userId")
+    public User groupPut(Long userId, Long groupId) {
+        if (userId == null) return null;
+        return groupPut(userId, Collections.singletonList(groupId));
     }
 
-    @CachePut(value = "user-names", key = "username")
-    public User groupPut(String username, List<Long> groupIdList) {
-        if (StringUtils.isEmpty(username)) return null;
-        User user = findUser(username);
+    @CachePut(value = "cache_users", key = "#userId")
+    public User groupPut(Long userId, List<Long> groupIdList) {
+        if (userId == null) return null;
+        User user = findUser(userId);
         if (groupIdList == null) return user;
-        List<Group> gs = user.getGroups();
-        List<Group> groups = groupIdList.stream().map(Group::new).collect(Collectors.toList());
+        Set<Group> gs = user.getGroups();
+        Set<Group> groups = groupIdList.stream().map(Group::new).collect(Collectors.toSet());
         if (gs == null) gs = groups;
         else gs.addAll(groups);
         user.setGroups(gs);
         return userDao.save(user);
     }
 
-    @CachePut(value = "user-names", key = "username")
-    public User groupDrop(String username, Long group) {
-        if (StringUtils.isEmpty(username)) return null;
-        return groupDrop(username, Collections.singletonList(group));
+    @CachePut(value = "cache_users", key = "#userId")
+    public User groupDrop(Long userId, Long group) {
+        if (userId == null) return null;
+        return groupDrop(userId, Collections.singletonList(group));
     }
 
-    @CachePut(value = "user-names", key = "username")
-    public User groupDrop(String username, List<Long> groupIdList) {
-        if (StringUtils.isEmpty(username)) return null;
-        User user = findUser(username);
-        List<Group> gs = user.getGroups();
+    @CachePut(value = "cache_users", key = "#userId")
+    public User groupDrop(Long userId, List<Long> groupIdList) {
+        if (userId == null) return null;
+        User user = findUser(userId);
+        Set<Group> gs = user.getGroups();
         if (gs == null) return user;
-        user.setGroups(gs.stream().filter(a -> !groupIdList.contains(a.getId())).collect(Collectors.toList()));
+        user.setGroups(gs.stream().filter(a -> !groupIdList.contains(a.getId())).collect(Collectors.toSet()));
         return userDao.save(user);
     }
 
-    @CachePut(value = "user-names", key = "username")
-    public User groupMove(String username, Long fromId, Long toId) {
-        if (StringUtils.isEmpty(username)) return null;
-        User user = findUser(username);
-        List<Group> gs = user.getGroups();
+    @CachePut(value = "cache_users", key = "#userId")
+    public User groupMove(Long userId, Long fromId, Long toId) {
+        if (userId == null) return null;
+        User user = findUser(userId);
+        Set<Group> gs = user.getGroups();
         if (gs == null || gs.size() < 1) return user;
         gs = gs.stream().map(a -> {
             if (a.getId().equals(fromId))
                 return new Group(toId);
             else return a;
-        }).collect(Collectors.toList());
+        }).collect(Collectors.toSet());
         user.setGroups(gs);
         return userDao.save(user);
     }
 
-    @CachePut(value = "user-names", key = "username")
-    public User rolePut(String username, Long roleId) {
-        if (StringUtils.isEmpty(username)) return null;
-        return rolePut(username, Collections.singletonList(roleId));
+    @CachePut(value = "cache_users", key = "#userId")
+    public User rolePut(Long userId, Long roleId) {
+        if (userId == null) return null;
+        return rolePut(userId, Collections.singletonList(roleId));
     }
 
-    @CachePut(value = "user-names", key = "username")
-    public User rolePut(String username, List<Long> roleIdList) {
-        if (StringUtils.isEmpty(username)) return null;
-        User user = findUser(username);
+    @CachePut(value = "cache_users", key = "#userId")
+    public User rolePut(Long userId, List<Long> roleIdList) {
+        if (userId == null) return null;
+        User user = findUser(userId);
         if (roleIdList == null) return user;
-        List<Role> rs = user.getRoles();
-        List<Role> roles = roleIdList.stream().map(Role::new).collect(Collectors.toList());
+        Set<Role> rs = user.getRoles();
+        Set<Role> roles = roleIdList.stream().map(Role::new).collect(Collectors.toSet());
         if (rs == null) rs = roles;
         else rs.addAll(roles);
         user.setRoles(rs);
         return userDao.save(user);
     }
 
-    @CachePut(value = "user-names", key = "username")
-    public User roleDrop(String username, Long roleId) {
-        if (StringUtils.isEmpty(username)) return null;
-        return roleDrop(username, Collections.singletonList(roleId));
+    @CachePut(value = "cache_users", key = "#userId")
+    public User roleDrop(Long userId, Long roleId) {
+        if (userId == null) return null;
+        return roleDrop(userId, Collections.singletonList(roleId));
     }
 
-    @CachePut(value = "user-names", key = "username")
-    public User roleDrop(String username, List<Long> roleIdList) {
-        if (StringUtils.isEmpty(username)) return null;
-        User user = findUser(username);
-        List<Role> rs = user.getRoles();
+    @CachePut(value = "cache_users", key = "#userId")
+    public User roleDrop(Long userId, List<Long> roleIdList) {
+        if (userId == null) return null;
+        User user = findUser(userId);
+        Set<Role> rs = user.getRoles();
         if (rs == null) return user;
-        user.setRoles(rs.stream().filter(a -> !roleIdList.contains(a.getId())).collect(Collectors.toList()));
+        user.setRoles(rs.stream().filter(a -> !roleIdList.contains(a.getId())).collect(Collectors.toSet()));
         return userDao.save(user);
     }
 
-    @CachePut(value = "user-names", key = "username")
-    public User changePassword(String username, String original, String current) {
-        User user = findUser(username);
+    @CachePut(value = "cache_users", key = "#userId")
+    public User changePassword(Long userId, String original, String current) {
+        User user = findUser(userId);
         if (!checkPassword(user, original)) {
             throw new RuntimeException("password error!");
         }
@@ -159,7 +160,7 @@ public class UserManager {
     private boolean checkPassword(User user, String password) {
         if (user == null) return false;
         if (StringUtils.isEmpty(user.getPassword()))
-            user = findUser(user.getUsername());
+            user = findUser(user.getId());
         return bCryptPasswordEncoder.matches(password, user.getPassword());
     }
 }

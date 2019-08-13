@@ -26,7 +26,7 @@ public class SysUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user = userManager.findUser(s);
+        User user = userManager.findUserByUsername(s);
         if (user == null) {
             logger.debug("user '" + s + "' not found!");
             throw new UsernameNotFoundException("用户不存在");

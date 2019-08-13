@@ -5,9 +5,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name = "t_group")
+@Table(name = "t_common_group")
 public class Group extends BaseEntity {
 
     public Group(Long id) {
@@ -36,7 +37,7 @@ public class Group extends BaseEntity {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "groups", fetch = FetchType.LAZY)
-    private List<User> users;
+    private Set<User> users;
 
     public Long getId() {
         return id;
@@ -86,11 +87,11 @@ public class Group extends BaseEntity {
         this.parent = parent;
     }
 
-    public List<User> getUsers() {
+    public Set<User> getUsers() {
         return users;
     }
 
-    public void setUsers(List<User> users) {
+    public void setUsers(Set<User> users) {
         this.users = users;
     }
 }

@@ -4,10 +4,12 @@ package com.be.common.entity;
 import com.be.common.annotation.Dic;
 
 import javax.persistence.*;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name = "t_user")
+@Table(name = "t_common_user")
 public class User {
 
     @Id
@@ -21,7 +23,6 @@ public class User {
 
     private String nickname;
 
-    @Dic(id = 123L)
     private int state;
 
     private String mobile;
@@ -30,11 +31,11 @@ public class User {
 
     private String weChatId;
 
-    @ManyToMany
-    private List<Group> groups;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Group> groups;
 
-    @ManyToMany
-    private List<Role> roles;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Role> roles;
 
 
     public Long getId() {
@@ -101,19 +102,19 @@ public class User {
         this.weChatId = weChatId;
     }
 
-    public List<Group> getGroups() {
+    public Set<Group> getGroups() {
         return groups;
     }
 
-    public void setGroups(List<Group> groups) {
+    public void setGroups(Set<Group> groups) {
         this.groups = groups;
     }
 
-    public List<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 }

@@ -10,4 +10,5 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD})
 public @interface Dic {
     long id() default -1;
+
 }
